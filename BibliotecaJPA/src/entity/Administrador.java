@@ -7,13 +7,14 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Table(name="Administrador")
-public class Administrador extends Funcionario {
+public class Administrador {
 
 	@Id
 	@Column(name = "administrador_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
+	@Column(name = "salario")
 	private double salario;
 
 	private double calcularBonus;

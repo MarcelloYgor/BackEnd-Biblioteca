@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Table(name = "Funcionario")
@@ -13,7 +15,7 @@ public class Funcionario {
 	@Column(name = "funcionario_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	
+
 	@Column(name = "rg")
 	private String rg;
 
@@ -25,6 +27,16 @@ public class Funcionario {
 
 	@Column(name = "cpf")
 	private double cpf;
+
+	@OneToOne
+	@JoinColumn(name = "administrador_id")
+	@Column(name = "fk_admin", nullable = true)
+	private Administrador adm;
+
+	@OneToOne
+	@JoinColumn(name = "atendente_id")
+	@Column(name = "fk_atendente", nullable = true)
+	private Atendente atendente;
 
 	public String getRg() {
 		return rg;
@@ -56,6 +68,22 @@ public class Funcionario {
 
 	public void setCpf(double cpf) {
 		this.cpf = cpf;
+	}
+
+	public Administrador getAdm() {
+		return adm;
+	}
+
+	public void setAdm(Administrador adm) {
+		this.adm = adm;
+	}
+
+	public Atendente getAtendente() {
+		return atendente;
+	}
+
+	public void setAtendente(Atendente atendente) {
+		this.atendente = atendente;
 	}
 
 }

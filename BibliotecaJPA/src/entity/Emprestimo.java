@@ -10,7 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-@Table(name="Emprestimo")
+@Table(name = "Emprestimo")
 public class Emprestimo {
 
 	@Id
@@ -19,12 +19,12 @@ public class Emprestimo {
 	private int id;
 
 	@OneToOne
-	@JoinColumn(name="cliente_id")
+	@JoinColumn(name = "cliente_id")
 	@Column(name = "cliente")
 	private Cliente cliente;
 
 	@OneToOne
-	@JoinColumn(name="funcionario_id")
+	@JoinColumn(name = "funcionario_id")
 	@Column(name = "funcionario")
 	private Funcionario funcionario;
 
@@ -43,14 +43,6 @@ public class Emprestimo {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public String getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
 	}
 
 	public Funcionario getFuncionario() {
@@ -85,4 +77,11 @@ public class Emprestimo {
 		this.active = active;
 	}
 
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
 }
