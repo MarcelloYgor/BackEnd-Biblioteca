@@ -4,22 +4,29 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Table(name = "Livro")
 public class Livro {
 
 	@Id
-	@Column(name = "id")
+	@Column(name = "livro_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
 	@Column(name = "nome")
 	private String nome;
 
+	@OneToMany
+	@JoinColumn(name="autor_id")
 	@Column(name = "autor")
 	private Autor autor;
 
+	@OneToOne
+	@JoinColumn(name="editora_id")
 	@Column(name = "editora")
 	private Editora editora;
 
@@ -32,6 +39,8 @@ public class Livro {
 	@Column(name = "numpaginas")
 	private int numPaginas;
 
+	@OneToOne
+	@JoinColumn(name="genero_id")
 	@Column(name = "genero")
 	private Genero genero;
 
@@ -39,7 +48,7 @@ public class Livro {
 	private String idioma;
 
 	@Column(name = "qtddisponivel")
-	private static int qtdDisponivel;
+	private static int qtdDisponivel; // Tem que mudar
 
 	public int getId() {
 		return id;

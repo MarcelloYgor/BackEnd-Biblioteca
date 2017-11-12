@@ -10,7 +10,7 @@ import javax.persistence.Table;
 public class Funcionario {
 
 	@Id
-	@Column(name = "id")
+	@Column(name = "funcionario_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	

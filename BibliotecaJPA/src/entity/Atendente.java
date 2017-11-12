@@ -10,7 +10,7 @@ import javax.persistence.Table;
 public class Atendente extends Funcionario {
 
 	@Id
-	@Column(name = "id")
+	@Column(name = "atendente_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 

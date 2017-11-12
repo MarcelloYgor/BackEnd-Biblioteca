@@ -12,7 +12,7 @@ import javax.persistence.Table;
 public class Cliente {
 
 	@Id
-	@Column(name = "id")
+	@Column(name = "cliente_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 

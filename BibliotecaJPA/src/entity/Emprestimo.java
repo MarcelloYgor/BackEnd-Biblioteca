@@ -6,19 +6,25 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Table(name="Emprestimo")
 public class Emprestimo {
 
 	@Id
-	@Column(name = "id")
+	@Column(name = "emprestimo_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
-	@Column(name = "usuario")
-	private String usuario;
+	@OneToOne
+	@JoinColumn(name="cliente_id")
+	@Column(name = "cliente")
+	private Cliente cliente;
 
+	@OneToOne
+	@JoinColumn(name="funcionario_id")
 	@Column(name = "funcionario")
 	private Funcionario funcionario;
 
