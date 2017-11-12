@@ -4,13 +4,14 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-@Path("/")
+@Path("/teste")
 public class Teste {
-
-	@Path("/teste")
+	
+	@Path("/")
 	@GET
-	@Produces("text/plain")
+	@Produces("application/json")
 	public String teste() {
-		return "teste";
+		String retorno = "{\"ok\": \"funciona\"}";
+		return retorno;
 	}
 }
