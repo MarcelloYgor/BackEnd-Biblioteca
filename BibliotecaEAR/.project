@@ -3,7 +3,6 @@
 	<name>BibliotecaEAR</name>
 	<comment></comment>
 	<projects>
-		<project>BibliotecaJPA</project>
 		<project>BibliotecaWAR</project>
 	</projects>
 	<buildSpec>

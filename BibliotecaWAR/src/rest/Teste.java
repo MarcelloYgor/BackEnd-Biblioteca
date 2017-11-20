@@ -9,6 +9,7 @@ public class Teste {
 	
 	@Path("/")
 	@GET
+	@Secured
 	@Produces("application/json")
 	public String teste() {
 		String retorno = "{\"ok\": \"funciona\"}";
