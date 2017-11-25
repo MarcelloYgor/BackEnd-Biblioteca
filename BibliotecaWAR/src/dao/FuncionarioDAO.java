@@ -32,6 +32,7 @@ public class FuncionarioDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new Error(e);
 		} finally {
 			if (stmt != null) {
 				connection.closeConnection(stmt);

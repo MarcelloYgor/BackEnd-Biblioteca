@@ -8,12 +8,16 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import br.com.model.Credenciais;
+import dao.LoginDAO;
+import entity.Login;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Path("/authentication")
 public class Autenticacao {
 
+	private final LoginDAO login = new LoginDAO();
+	
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -33,6 +37,10 @@ public class Autenticacao {
 
 	private void authenticate(String username, String password) throws Exception {
 		// Busca no banco de dados
+		Login registro = login.consultarLoginEmail(username);
+		if (!registro.getEmail().equals(username) || !registro.getPassword().equals(password)) {
+			throw new Error("usuário ou senhá inválido");
+		}
 	}
 
 	private String issueToken(String username) {

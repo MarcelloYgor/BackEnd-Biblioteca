@@ -19,10 +19,10 @@ private Connection connection;
 		Connection conn = null;
 		try {
 			System.out.println("Conectando no banco de dados");
-			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-			String connection = "jdbc:sqlserver://meubancoaz.database.windows.net:1433;databaseName=teste";
-			String usuario = "roote";
-			String senha = "Abcd1234";
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			String connection = "jdbc:oracle:thin:@localhost:1521/xe";
+			String usuario = "livraria";
+			String senha = "livros";
 			conn = DriverManager.getConnection(connection, usuario, senha);
 		} catch (ClassNotFoundException ex) {
 			System.out.println("Error: unable to load driver class!");

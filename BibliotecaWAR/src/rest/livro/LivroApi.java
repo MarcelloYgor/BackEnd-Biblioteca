@@ -2,6 +2,7 @@ package rest.livro;
 
 import java.util.ArrayList;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -27,6 +28,32 @@ public class LivroApi {
 	public ResponseBuilder add(Livro livro) {
 		try {
 			livroDao.cadastrarLivro(livro);
+		} catch (Exception e) {
+			return Response.serverError();
+		}
+		return Response.ok("Ok");
+	}
+	
+	@Path("/alterar")
+	@POST
+	@Secured
+	@Produces("application/json")
+	public ResponseBuilder update(Livro livro) {
+		try {
+			livroDao.alterarLivro(livro);
+		} catch (Exception e) {
+			return Response.serverError();
+		}
+		return Response.ok("Ok");
+	}
+	
+	@Path("/delete")
+	@DELETE
+	@Secured
+	@Produces("application/json")
+	public ResponseBuilder delete(@QueryParam("id") int id) {
+		try {
+			livroDao.excluirLivro(id);
 		} catch (Exception e) {
 			return Response.serverError();
 		}
