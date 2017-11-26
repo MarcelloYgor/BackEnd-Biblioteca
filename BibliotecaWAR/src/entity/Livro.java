@@ -20,7 +20,7 @@ public class Livro {
 
 	private String idioma;
 
-	private static int qtdDisponivel; // Tem que mudar
+	private String img;
 
 	public int getId() {
 		return id;
@@ -94,12 +94,12 @@ public class Livro {
 		this.idioma = idioma;
 	}
 
-	public static int getQtdDisponivel() {
-		return qtdDisponivel;
+	public String getImg() {
+		return img;
 	}
 
-	public static void setQtdDisponivel(int qtdDisponivel) {
-		Livro.qtdDisponivel = qtdDisponivel;
+	public void setImg(String img) {
+		this.img = img;
 	}
 
 }

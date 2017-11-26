@@ -1,6 +1,11 @@
 package rest.funcionario;
 
+import java.util.ArrayList;
+
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -14,85 +19,97 @@ import rest.authentication.Secured;
 public class Funcionario {
 
 	private final FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-//
-//	@Path("/adicionar")
-//	@PUT
-//	@Secured
-//	@Produces("application/json")
-//	public ResponseBuilder add(Livro livro) {
-//		try {
-//			funcionarioDAO.cadastrarLivro(livro);
-//		} catch (Exception e) {
-//			return Response.serverError();
-//		}
-//		return Response.ok("Ok");
-//	}
-//	
-//	@Path("/alterar")
-//	@POST
-//	@Secured
-//	@Produces("application/json")
-//	public ResponseBuilder update(Livro livro) {
-//		try {
-//			livroDao.alterarLivro(livro);
-//		} catch (Exception e) {
-//			return Response.serverError();
-//		}
-//		return Response.ok("Ok");
-//	}
-//	
-//	@Path("/delete")
-//	@DELETE
-//	@Secured
-//	@Produces("application/json")
-//	public ResponseBuilder delete(@QueryParam("id") int id) {
-//		try {
-//			livroDao.excluirLivro(id);
-//		} catch (Exception e) {
-//			return Response.serverError();
-//		}
-//		return Response.ok("Ok");
-//	}
+	
+	@Path("/adicionar")
+	@PUT
+	@Secured
+	@Produces("application/json")
+	public Response add(entity.Funcionario f) {
+		ResponseBuilder builder = null;
+		try {
+			funcionarioDAO.cadastraFuncionario(f);
+			builder = Response.ok("Ok");
+		} catch (Exception e) {
+			builder = Response.serverError();
+		}
+		return builder.build();
+	}
+	
+	@Path("/alterar")
+	@POST
+	@Secured
+	@Produces("application/json")
+	public Response update(entity.Funcionario f) {
+		ResponseBuilder builder = null;
+		try {
+			funcionarioDAO.alterarFuncionario(f);
+			builder =Response.ok("Ok");
+		} catch (Exception e) {
+			builder = Response.serverError();
+		}
+		return builder.build();
+	}
+	
+	@Path("/delete")
+	@DELETE
+	@Secured
+	@Produces("application/json")
+	public Response delete(@QueryParam("id") int id) {
+		ResponseBuilder builder = null;
+		try {
+			funcionarioDAO.excluirFuncionario(id);
+			builder =  Response.ok("Ok");
+		} catch (Exception e) {
+			builder = Response.serverError();
+		}
+		return builder.build();
+	}
+	
+	@Path("/pesquisar/id")
+	@POST
+	@Secured
+	@Produces("application/json")
+	public Response pesquisaId(int id) {
+		ResponseBuilder builder = null;
+		entity.Funcionario funcionario = null;
+		try {
+			funcionario = funcionarioDAO.consultarFuncionarioId(id);
+			builder = Response.ok(funcionario);
+		} catch (Exception e) {
+			builder = Response.serverError();
+		}
+		return builder.build();
+	}
 	
 	@Path("/pesquisar")
 	@POST
 	@Secured
 	@Produces("application/json")
-	public ResponseBuilder pesquisaId(@QueryParam("id") int id) {
+	public Response pesquisaNome(String nome) {
 		entity.Funcionario funcionario = null;
+		ResponseBuilder builder = null;
 		try {
-			funcionario = funcionarioDAO.consultarFuncionarioId(id);
+			funcionario = funcionarioDAO.consultarFuncionarioNome(nome);
+			builder = Response.ok(funcionario);
 		} catch (Exception e) {
-			return Response.serverError();
+			builder = Response.serverError();
 		}
-		return Response.ok(funcionario);
+		return builder.build();
 	}
 	
-//	@Path("/pesquisar")
-//	@POST
-//	@Secured
-//	@Produces("application/json")
-//	public ResponseBuilder pesquisaNome(@QueryParam("nome") String nome) {
-//		Livro livro = null;
-//		try {
-//			livro = livroDao.consultarLivroNome(nome);
-//		} catch (Exception e) {
-//			return Response.serverError();
-//		}
-//		return Response.ok(livro);
-//	}
-//	
-//	@Path("/pesquisar")
-//	@GET
-//	@Secured
-//	@Produces("application/json")
-//	public ResponseBuilder pesquisaTodos() {
-//		ArrayList<Livro> livros = null;
-//		try {
-//			livros = livroDao.consultarLivroTodos();
-//		} catch (Exception e) {
-//			return Response.serverError();
-//		}
-//		return Response.ok(livros);
-//	}
+	@Path("/pesquisar")
+	@GET
+	@Secured
+	@Produces("application/json")
+	public Response pesquisaTodos() {
+		ArrayList<entity.Funcionario> funcionarios = null;
+		ResponseBuilder builder = null;
+		try {
+			funcionarios = funcionarioDAO.consultarTodos();
+			builder = Response.ok(funcionarios);
+		} catch (Exception e) {
+			builder = Response.serverError();
+		}
+		return builder.build();
+	}
 }

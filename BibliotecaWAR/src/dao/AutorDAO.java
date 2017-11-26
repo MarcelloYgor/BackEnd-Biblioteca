@@ -35,6 +35,7 @@ public class AutorDAO {
 
 	public Autor consultarAutorNome(String nome) {
 		PreparedStatement stmt = null;
+		System.out.println(nome);
 		Autor retorno = null;
 		try {
 			connection = new BibliotecaDatasource();
@@ -43,8 +44,7 @@ public class AutorDAO {
 			stmt.setString(1, nome);
 
 			ResultSet result = stmt.executeQuery();
-			if (result.isBeforeFirst()) {
-				result.next();
+			while (result.next()) {
 				retorno = new Autor();
 				retorno.setId(result.getInt("id"));
 				retorno.setNome(result.getString("nome"));
@@ -93,7 +93,7 @@ public class AutorDAO {
 		try {
 			connection = new BibliotecaDatasource();
 			String sql = "select id, nome, nacionalidade "
-					+ "from tb_autor;";
+					+ "from tb_autor";
 			stmt = connection.getPreparedStatement(sql);
 			ResultSet result = stmt.executeQuery();
 

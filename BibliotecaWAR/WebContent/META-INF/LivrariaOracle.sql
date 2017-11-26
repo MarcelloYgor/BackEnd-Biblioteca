@@ -1,3 +1,4 @@
+
 CREATE TABLE tb_cliente (
 	id INTEGER primary key,
 	nome VARCHAR(35) NOT NULL,
@@ -8,6 +9,17 @@ CREATE TABLE tb_cliente (
 	cidade VARCHAR(35) NOT NULL,
 	dt_nascimento DATE NOT NULL
 );
+CREATE SEQUENCE cliente_seq START WITH 1;
+
+CREATE OR REPLACE TRIGGER cliente_bir 
+BEFORE INSERT ON tb_cliente
+FOR EACH ROW
+
+BEGIN
+  SELECT cliente_seq.NEXTVAL
+  INTO   :new.id
+  FROM   dual;
+END;
 		
 CREATE TABLE tb_editora (
 	id INT PRIMARY KEY,
@@ -15,18 +27,51 @@ CREATE TABLE tb_editora (
 	endereco VARCHAR(100) NOT NULL,
 	nacionalidade VARCHAR(20) NOT NULL
 );
+CREATE SEQUENCE editora_seq START WITH 1;
+
+CREATE OR REPLACE TRIGGER cliente_bir 
+BEFORE INSERT ON tb_editora
+FOR EACH ROW
+
+BEGIN
+  SELECT editora_seq.NEXTVAL
+  INTO   :new.id
+  FROM   dual;
+END;
 		
 CREATE TABLE tb_autor (
 	id INT PRIMARY KEY,
 	nome VARCHAR(35) NOT NULL,
 	nacionalidade VARCHAR(20) NOT NULL
 );
+CREATE SEQUENCE autor_seq START WITH 1;
+
+CREATE OR REPLACE TRIGGER autor_bir 
+BEFORE INSERT ON tb_autor
+FOR EACH ROW
+
+BEGIN
+  SELECT autor_seq.NEXTVAL
+  INTO   :new.id
+  FROM   dual;
+END;
 		
 CREATE TABLE tb_genero (
 	id INT PRIMARY KEY,
 	nome VARCHAR(35) NOT NULL,
 	descricao VARCHAR(100)
 );
+CREATE SEQUENCE genero_seq START WITH 1;
+
+CREATE OR REPLACE TRIGGER genero_bir 
+BEFORE INSERT ON tb_genero
+FOR EACH ROW
+
+BEGIN
+  SELECT genero_seq.NEXTVAL
+  INTO   :new.id
+  FROM   dual;
+END;
 		
 CREATE TABLE tb_funcionario (
 	id INT PRIMARY KEY,
@@ -36,6 +81,17 @@ CREATE TABLE tb_funcionario (
 	salario FLOAT NOT NULL,
 	admin int NOT NULL
 );
+CREATE SEQUENCE funcionario_seq START WITH 1;
+
+CREATE OR REPLACE TRIGGER funcionario_bir 
+BEFORE INSERT ON tb_funcionario
+FOR EACH ROW
+
+BEGIN
+  SELECT funcionario_seq.NEXTVAL
+  INTO   :new.id
+  FROM   dual;
+END;
 		
 CREATE TABLE tb_login (
 	id INT PRIMARY KEY,
@@ -44,6 +100,17 @@ CREATE TABLE tb_login (
 	password VARCHAR(20) NOT NULL,
 	admin int NOT NULL
 );
+CREATE SEQUENCE login_seq START WITH 1;
+
+CREATE OR REPLACE TRIGGER login_bir 
+BEFORE INSERT ON tb_login
+FOR EACH ROW
+
+BEGIN
+  SELECT login_seq.NEXTVAL
+  INTO   :new.id
+  FROM   dual;
+END;
 			
 CREATE TABLE tb_livro (
 	id INT PRIMARY KEY,
@@ -57,6 +124,18 @@ CREATE TABLE tb_livro (
 	idioma VARCHAR(20),
 	img VARCHAR(20)
 );
+
+CREATE SEQUENCE livro_seq START WITH 1;
+
+CREATE OR REPLACE TRIGGER livro_bir 
+BEFORE INSERT ON tb_livro 
+FOR EACH ROW
+
+BEGIN
+  SELECT livro_seq.NEXTVAL
+  INTO   :new.id
+  FROM   dual;
+END;
 			
 CREATE TABLE tb_emprestimo (
 	id INT PRIMARY KEY,
@@ -66,6 +145,18 @@ CREATE TABLE tb_emprestimo (
 	data_devolucao DATE,
 	active int NOT NULL
 );
+
+CREATE SEQUENCE emprestimo_seq START WITH 1;
+
+CREATE OR REPLACE TRIGGER emprestimo_bir 
+BEFORE INSERT ON tb_emprestimo 
+FOR EACH ROW
+
+BEGIN
+  SELECT emprestimo_seq.NEXTVAL
+  INTO   :new.id
+  FROM   dual;
+END;
 			
 CREATE TABLE tb_livros_emprestados (
 	id INT PRIMARY KEY,
@@ -73,21 +164,14 @@ CREATE TABLE tb_livros_emprestados (
 	id_livro INT constraint fk_livro_le references tb_livro
 );
 
-select * from tb_login;
+CREATE SEQUENCE livros_emprestados_seq START WITH 1;
 
-select * from tb_funcionario;
+CREATE OR REPLACE TRIGGER livros_emprestados_bir 
+BEFORE INSERT ON tb_livros_emprestados 
+FOR EACH ROW
 
-insert into tb_funcionario(SALARIO,RG,NOME,ID,CPF,ADMIN) values(21000, '52500581x', 'felipe',1,10,1);
-
-insert into tb_login(PASSWORD,ID_FUNCIONARIO,ID,EMAIL,ADMIN) values('123',1,1,'felipe@felipe.com',1);
-
-SELECT * FROM tb_login;
-
-insert into TB_AUTOR(id,nacionalidade,nome) values(1,'Jeff Sutherland','USA');
-
-insert into TB_EDITORA(id,nacionalidade,nome,endereco) values(1,'br','leya','Av. Angélica');
-
-insert into TB_GENERO(id,nome,descricao) values(1,'unknown', 'desconhecido');
-
-select * from tb_livro;
-
+BEGIN
+  SELECT livros_emprestados_seq.NEXTVAL
+  INTO   :new.id
+  FROM   dual;
+END;

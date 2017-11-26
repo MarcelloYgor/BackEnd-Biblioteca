@@ -7,10 +7,22 @@ public class Funcionario {
 	private String nome;
 	
 	private String rg;
+	
+	private Double salario;
 
 	private long cpf;
 	
 	private boolean admin;
+	
+	
+
+	public Double getSalario() {
+		return salario;
+	}
+
+	public void setSalario(Double salario) {
+		this.salario = salario;
+	}
 
 	public int getId() {
 		return id;

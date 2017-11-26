@@ -13,11 +13,12 @@ public class LivroDAO {
 
 	private BibliotecaDatasource connection;
 
-	public void cadastrarLivro(Livro livro) {
+	public void cadastrarLivro(Livro livro) throws SQLException {
 		PreparedStatement stmt = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "INSERT INTO tb_Livro VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);";
+			String sql = "INSERT INTO tb_Livro(nome, id_autor, id_editora, ano, edicao, num_paginas, id_genero, idioma, img) "
+					+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			stmt = connection.getPreparedStatement(sql);
 			stmt.setString(1, livro.getNome());
 			stmt.setInt(2, livro.getAutor().getId());
@@ -27,13 +28,13 @@ public class LivroDAO {
 			stmt.setInt(6, livro.getNumPaginas());
 			stmt.setInt(7, livro.getGenero().getId());
 			stmt.setString(8, livro.getIdioma());
-			stmt.setInt(9, Livro.getQtdDisponivel());
+			stmt.setString(9, livro.getImg());
 
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("Couldnt save object in database!\n SqlState: " + e.getSQLState() + "\nErrorCode: "
 					+ e.getErrorCode() + " " + "\nMessage: " + e.getMessage());
-			throw new Error(e);
+			throw e;
 		} finally {
 			if (stmt != null) {
 				connection.closeConnection(stmt);
@@ -41,12 +42,12 @@ public class LivroDAO {
 		}
 	}
 
-	public Livro consultarLivroNome(String nome) {
+	public Livro consultarLivroNome(String nome) throws SQLException {
 		PreparedStatement stmt = null;
 		Livro retorno = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "SELECT id, nome, id_autor, id_editora, ano, edicao, num_paginas, id_genero, idioma, qtd_disponivel FROM tb_Livro WHERE nome = ?";
+			String sql = "SELECT id, nome, id_autor, id_editora, ano, edicao, num_paginas, id_genero, idioma, img FROM tb_Livro WHERE nome = ?";
 			stmt = connection.getPreparedStatement(sql);
 			stmt.setString(1, nome);
 
@@ -66,11 +67,11 @@ public class LivroDAO {
 				retorno.setNumPaginas(result.getInt("num_paginas"));
 				retorno.setGenero(genero.consultarGeneroId(result.getInt("id_genero")));
 				retorno.setIdioma(result.getString("idioma"));
-				Livro.setQtdDisponivel(result.getInt("qtd_disponivel"));
+				retorno.setImg(result.getString("img"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new Error(e);
+			throw e;
 		} finally {
 			if (stmt != null) {
 				connection.closeConnection(stmt);
@@ -79,12 +80,12 @@ public class LivroDAO {
 		return retorno;
 	}
 
-	public Livro consultarLivroId(int id) {
+	public Livro consultarLivroId(int id) throws SQLException {
 		PreparedStatement stmt = null;
 		Livro retorno = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "SELECT id, nome, id_autor, id_editora, ano, edicao, num_paginas, id_genero, idioma, qtd_disponivel FROM tb_Livro WHERE id = ?";
+			String sql = "SELECT id, nome, id_autor, id_editora, ano, edicao, num_paginas, id_genero, idioma, img FROM tb_Livro WHERE id = ?";
 			stmt = connection.getPreparedStatement(sql);
 			stmt.setInt(1, id);
 
@@ -104,11 +105,11 @@ public class LivroDAO {
 				retorno.setNumPaginas(result.getInt("num_paginas"));
 				retorno.setGenero(genero.consultarGeneroId(result.getInt("id_genero")));
 				retorno.setIdioma(result.getString("idioma"));
-				Livro.setQtdDisponivel(result.getInt("qtd_disponivel"));
+				retorno.setImg(result.getString("img"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new Error(e);
+			throw e;
 		} finally {
 			if (stmt != null) {
 				connection.closeConnection(stmt);
@@ -117,13 +118,13 @@ public class LivroDAO {
 		return retorno;
 	}
 
-	public List<Livro> pegarLivros() {
+	public List<Livro> pegarLivros() throws SQLException {
 		PreparedStatement stmt = null;
 		List<Livro> livros = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "select id, nome, id_autor, id_editora, ano, edicao, num_paginas, id_genero, idioma, qtd_disponivel "
-					+ "from tb_livro;";
+			String sql = "select id, nome, id_autor, id_editora, ano, edicao, num_paginas, id_genero, idioma, img "
+					+ "from tb_livro";
 			stmt = connection.getPreparedStatement(sql);
 			ResultSet result = stmt.executeQuery();
 
@@ -142,13 +143,13 @@ public class LivroDAO {
 				livro.setNumPaginas(result.getInt("num_paginas"));
 				livro.setGenero(genero.consultarGeneroId(result.getInt("id_genero")));
 				livro.setIdioma(result.getString("idioma"));
-				Livro.setQtdDisponivel(result.getInt("qtd_disponivel"));
+				livro.setImg(result.getString("img"));
 				livros.add(livro);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			throw new Error(e);
+			throw e;
 		} finally {
 			if (stmt != null) {
 				connection.closeConnection(stmt);
@@ -157,18 +158,18 @@ public class LivroDAO {
 		return livros;
 	}
 
-	public void excluirLivro(int id) {
+	public void excluirLivro(int id) throws SQLException {
 		PreparedStatement stmt = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "DELETE FROM tb_livro WHERE id = ?;";
+			String sql = "DELETE FROM tb_livro WHERE id = ?";
 			stmt = connection.getPreparedStatement(sql);
 			stmt.setInt(1, id);
 
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new Error(e);
+			throw e;
 		} finally {
 			if (connection != null) {
 				connection.closeConnection(stmt);
@@ -176,12 +177,12 @@ public class LivroDAO {
 		}
 	}
 
-	public void alterarLivro(Livro livro) {
+	public void alterarLivro(Livro livro) throws SQLException {
 		PreparedStatement stmt = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "UPDATE tb_Livro SET nome = ?, id_autor = ?, id_editora = ?, ano = ?, edicao = ?, num_paginas = ?, id_genero = ?, idioma = ?, qtd_disponivel = ?"
-					+ " WHERE id = ?;";
+			String sql = "UPDATE tb_Livro SET nome = ?, id_autor = ?, id_editora = ?, ano = ?, edicao = ?, num_paginas = ?, id_genero = ?, idioma = ?, img = ?"
+					+ " WHERE id = ?";
 			stmt = connection.getPreparedStatement(sql);
 			stmt.setString(1, livro.getNome());
 			stmt.setInt(2, livro.getAutor().getId());
@@ -191,13 +192,13 @@ public class LivroDAO {
 			stmt.setInt(6, livro.getNumPaginas());
 			stmt.setInt(7, livro.getGenero().getId());
 			stmt.setString(8, livro.getIdioma());
-			stmt.setInt(9, Livro.getQtdDisponivel());
+			stmt.setString(9, livro.getImg());
 			stmt.setInt(10, livro.getId());
 
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new Error(e);
+			throw e;
 		} finally {
 			if (connection != null) {
 				connection.closeConnection(stmt);
@@ -205,19 +206,19 @@ public class LivroDAO {
 		}
 	}
 
-	public ArrayList<Livro> consultarLivroTodos() {
+	public ArrayList<Livro> consultarLivroTodos() throws SQLException {
 
 		PreparedStatement stmt = null;
 		ArrayList<Livro> retorno = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "SELECT * FROM tb_Livro";
+			String sql = "SELECT id, nome, id_autor, id_editora, ano, edicao, num_paginas, id_genero, idioma, img FROM tb_Livro";
 			stmt = connection.getPreparedStatement(sql);
 
 			ResultSet result = stmt.executeQuery();
 			retorno = new ArrayList<>();
 
-			if (result.next()) {
+			while (result.next()) {
 				Livro retornoA = new Livro();
 				AutorDAO autor = new AutorDAO();
 				EditoraDAO editora = new EditoraDAO();
@@ -231,12 +232,12 @@ public class LivroDAO {
 				retornoA.setNumPaginas(result.getInt("num_paginas"));
 				retornoA.setGenero(genero.consultarGeneroId(result.getInt("id_genero")));
 				retornoA.setIdioma(result.getString("idioma"));
-				Livro.setQtdDisponivel(result.getInt("qtd_disponivel"));
+				retornoA.setImg(result.getString("img"));
 				retorno.add(retornoA);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new Error(e);
+			throw e;
 		} finally {
 			if (stmt != null) {
 				connection.closeConnection(stmt);

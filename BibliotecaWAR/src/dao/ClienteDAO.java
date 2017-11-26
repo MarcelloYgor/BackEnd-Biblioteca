@@ -13,11 +13,11 @@ public class ClienteDAO {
 
 	private BibliotecaDatasource connection;
 
-	public void cadastrarCliente(Cliente cliente) {
+	public void cadastrarCliente(Cliente cliente) throws SQLException {
 		PreparedStatement stmt = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "INSERT INTO tb_cliente VALUES(?, ?, ?, ?, ?, ?, ?);";
+			String sql = "INSERT INTO tb_cliente(nome, rg, cpf, endereco, telefone, cidade, dt_nascimento) VALUES(?, ?, ?, ?, ?, ?, ?)";
 			stmt = connection.getPreparedStatement(sql);
 			stmt.setString(1, cliente.getNome());
 			stmt.setString(2, cliente.getRg());
@@ -31,6 +31,7 @@ public class ClienteDAO {
 		} catch (SQLException e) {
 			System.out.println("Couldnt save object in database!\n SqlState: " + e.getSQLState() + "\nErrorCode: "
 					+ e.getErrorCode() + " " + "\nMessage: " + e.getMessage());
+			throw e;
 		} finally {
 			if (stmt != null) {
 				connection.closeConnection(stmt);
@@ -38,7 +39,7 @@ public class ClienteDAO {
 		}
 	}
 
-	public Cliente consultarClienteCpf(long cpf) {
+	public Cliente consultarClienteCpf(long cpf) throws SQLException {
 		PreparedStatement stmt = null;
 		Cliente retorno = null;
 		try {
@@ -62,6 +63,7 @@ public class ClienteDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw e;
 		} finally {
 			if (stmt != null) {
 				connection.closeConnection(stmt);
@@ -70,7 +72,7 @@ public class ClienteDAO {
 		return retorno;
 	}
 	
-	public Cliente consultarClienteId(int cpf) {
+	public Cliente consultarClienteId(int cpf) throws SQLException {
 		PreparedStatement stmt = null;
 		Cliente retorno = null;
 		try {
@@ -94,6 +96,7 @@ public class ClienteDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw e;
 		} finally {
 			if (stmt != null) {
 				connection.closeConnection(stmt);
@@ -108,7 +111,7 @@ public class ClienteDAO {
 		try {
 			connection = new BibliotecaDatasource();
 			String sql = "select id, nome, rg, cpf, endereco, telefone, cidade, dt_nascimento "
-					+ "from tb_cliente;";
+					+ "from tb_cliente";
 			stmt = connection.getPreparedStatement(sql);
 			ResultSet result = stmt.executeQuery();
 
@@ -136,17 +139,18 @@ public class ClienteDAO {
 		return clientes;
 	}
 
-	public void excluirCliente(int id) {
+	public void excluirCliente(int id) throws SQLException {
 		PreparedStatement stmt = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "DELETE FROM tb_cliente WHERE id = ?;";
+			String sql = "DELETE FROM tb_cliente WHERE id = ?";
 			stmt = connection.getPreparedStatement(sql);
 			stmt.setInt(1, id);
 
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw e;
 		} finally {
 			if (connection != null) {
 				connection.closeConnection(stmt);
@@ -154,7 +158,7 @@ public class ClienteDAO {
 		}
 	}
 
-	public void alterarCliente(Cliente cliente) {
+	public void alterarCliente(Cliente cliente) throws SQLException {
 		PreparedStatement stmt = null;
 		try {
 			connection = new BibliotecaDatasource();
@@ -173,6 +177,7 @@ public class ClienteDAO {
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw e;
 		} finally {
 			if (connection != null) {
 				connection.closeConnection(stmt);

@@ -1,6 +1,6 @@
-package rest.livro;
+package rest.cliente;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -12,34 +12,22 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
-import dao.AutorDAO;
-import dao.EditoraDAO;
-import dao.GeneroDAO;
-import dao.LivroDAO;
-import entity.Livro;
+import dao.ClienteDAO;
 import rest.authentication.Secured;
 
-@Path("/livro")
-public class LivroApi {
-	
-	private final LivroDAO livroDao = new LivroDAO();
-	private final AutorDAO autorDao = new AutorDAO();
-	private final EditoraDAO editoraDao = new EditoraDAO();
-	private final GeneroDAO generoDao = new GeneroDAO();
+@Path("/cliente")
+public class Cliente {
 
+	private final ClienteDAO clienteDao = new ClienteDAO();
+	
 	@Path("/adicionar")
 	@PUT
 	@Secured
 	@Produces("application/json")
-	public Response add(Livro livro) {
+	public Response add(entity.Cliente cliente) {
 		Response.ResponseBuilder builder = null;
 		try {
-			// Autor editora genero
-			livro.setAutor(autorDao.consultarAutorNome(livro.getAutor().getNome()));
-			livro.setEditora(editoraDao.consultarEditoraNome(livro.getEditora().getNome()));
-			livro.setGenero(generoDao.consultarGeneroNome(livro.getGenero().getNome()));
-			livroDao.cadastrarLivro(livro);
-
+			clienteDao.cadastrarCliente(cliente);
 			builder = Response.ok("Ok");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -52,10 +40,10 @@ public class LivroApi {
 	@POST
 	@Secured
 	@Produces("application/json")
-	public Response update(Livro livro) {
+	public Response update(entity.Cliente cliente) {
 		Response.ResponseBuilder builder = null;
 		try {
-			livroDao.alterarLivro(livro);
+			clienteDao.alterarCliente(cliente);
 			builder = Response.ok("Ok");
 		} catch (Exception e) {
 			builder=  Response.serverError();
@@ -69,23 +57,23 @@ public class LivroApi {
 	@Produces("application/json")
 	public ResponseBuilder delete(@QueryParam("id") int id) {
 		try {
-			livroDao.excluirLivro(id);
+			clienteDao.excluirCliente(id);
 		} catch (Exception e) {
 			return Response.serverError();
 		}
 		return Response.ok("Ok");
 	}
 	
-	@Path("/pesquisar")
+	@Path("/pesquisar/id")
 	@POST
 	@Secured
 	@Produces("application/json")
 	public Response pesquisaId(@QueryParam("id") int id) {
-		Livro livro = null;
+		entity.Cliente cliente = null;
 		Response.ResponseBuilder builder = null;
 		try {
-			livro = livroDao.consultarLivroId(id);
-			builder = Response.ok(livro);
+			cliente = clienteDao.consultarClienteId(id);
+			builder = Response.ok(cliente);
 		} catch (Exception e) {
 			builder = Response.serverError();
 		}
@@ -96,12 +84,13 @@ public class LivroApi {
 	@POST
 	@Secured
 	@Produces("application/json")
-	public Response pesquisaNome(@QueryParam("nome") String nome) {
-		Livro livro = null;
+	public Response pesquisaNome(Long cpf) {
+		entity.Cliente cliente = null;
 		Response.ResponseBuilder builder = null;
 		try {
-			livro = livroDao.consultarLivroNome(nome);
-			builder = Response.ok(livro);
+			System.out.println(cpf);
+			cliente = clienteDao.consultarClienteCpf(cpf);
+			builder = Response.ok(cliente);
 		} catch (Exception e) {
 			builder = Response.serverError();
 		}
@@ -113,12 +102,12 @@ public class LivroApi {
 	@Secured
 	@Produces("application/json")
 	public Response pesquisaTodos() {
-		ArrayList<Livro> livros = null;
+		List<entity.Cliente> clientes = null;
 		Response.ResponseBuilder builder = null;
 		try {
 			System.out.println("Aqui");
-			livros = livroDao.consultarLivroTodos();
-			builder = Response.ok(livros);
+			clientes = clienteDao.pegarClientes();
+			builder = Response.ok(clientes);
 		} catch (Exception e) {
 			builder = Response.serverError();
 		}
