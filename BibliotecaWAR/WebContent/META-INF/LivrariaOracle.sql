@@ -55,7 +55,7 @@ CREATE TABLE tb_livro (
 	num_paginas INT NOT NULL,
 	id_genero INT constraint fk_genero_livro references tb_genero,
 	idioma VARCHAR(20),
-	qtd_disponivel INT NOT NULL
+	img VARCHAR(20)
 );
 			
 CREATE TABLE tb_emprestimo (
@@ -73,22 +73,21 @@ CREATE TABLE tb_livros_emprestados (
 	id_livro INT constraint fk_livro_le references tb_livro
 );
 
-select * from tb_livros_emprestados;
-select * from tb_emprestimo;
-select * from tb_livro;
 select * from tb_login;
-select * from tb_funcionario;
-select * from tb_genero;
-select * from tb_autor;
-select * from tb_editora;
-select * from tb_cliente;
 
-DELETE FROM tb_livros_emprestados;
-DELETE FROM tb_emprestimo;
-DELETE FROM tb_livro;
-DELETE FROM tb_login;
-DELETE FROM tb_funcionario;
-DELETE FROM tb_genero;
-DELETE FROM tb_autor;
-DELETE FROM tb_editora;
-DELETE FROM tb_cliente;
+select * from tb_funcionario;
+
+insert into tb_funcionario(SALARIO,RG,NOME,ID,CPF,ADMIN) values(21000, '52500581x', 'felipe',1,10,1);
+
+insert into tb_login(PASSWORD,ID_FUNCIONARIO,ID,EMAIL,ADMIN) values('123',1,1,'felipe@felipe.com',1);
+
+SELECT * FROM tb_login;
+
+insert into TB_AUTOR(id,nacionalidade,nome) values(1,'Jeff Sutherland','USA');
+
+insert into TB_EDITORA(id,nacionalidade,nome,endereco) values(1,'br','leya','Av. Angélica');
+
+insert into TB_GENERO(id,nome,descricao) values(1,'unknown', 'desconhecido');
+
+select * from tb_livro;
+
