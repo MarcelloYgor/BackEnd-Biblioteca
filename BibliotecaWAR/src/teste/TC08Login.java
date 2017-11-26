@@ -1,5 +1,7 @@
 package teste;
 
+import java.sql.SQLException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +28,7 @@ public class TC08Login {
 		login.setEmail("funcionario@biblioteca.com");
 		login.setPassword("senha");
 		administrador = new Administrador();
-		administrador.setNome("Igão de Souza");
+		administrador.setNome("Igï¿½o de Souza");
 		administrador.setRg("123456789");
 		administrador.setCpf(12345678910L);
 		administrador.setSalario(2500.00);
@@ -53,7 +55,12 @@ public class TC08Login {
 	public void alterarLogin() {
 		logDAO = new LoginDAO();
 		logDAO.cadastrarLogin(login);
-		login = logDAO.consultarLoginEmail(login.getEmail());
+		try {
+			login = logDAO.consultarLoginEmail(login.getEmail());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		login.setPassword("senha123");
 		logDAO.alterarLogin(login);
 	}
@@ -62,7 +69,12 @@ public class TC08Login {
 	public void consultarLogin() {
 		logDAO = new LoginDAO();
 		logDAO.cadastrarLogin(login);
-		login = logDAO.consultarLoginEmail(login.getEmail());
+		try {
+			login = logDAO.consultarLoginEmail(login.getEmail());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

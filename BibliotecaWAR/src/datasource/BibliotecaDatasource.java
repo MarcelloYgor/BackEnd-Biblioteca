@@ -1,5 +1,6 @@
 package datasource;
 
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -29,7 +30,6 @@ private Connection connection;
 			System.exit(1);
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new Error(e);
 		} if (conn != null) {
 			System.out.println("Conectado com sucesso!");
 		} else if (conn == null) {
@@ -54,9 +54,7 @@ private Connection connection;
 			pstmt.close();
 			connection.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			throw new Error(e);
 		}
 		return true;
 	}

@@ -40,7 +40,7 @@ public class LoginDAO {
 		Login retorno = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "select * from tb_login where email = ?";
+			String sql = "select PASSWORD,ID_FUNCIONARIO,ID,EMAIL,ADMIN from tb_login where email = ?";
 			stmt = connection.getPreparedStatement(sql);
 			stmt.setString(1, email);
 

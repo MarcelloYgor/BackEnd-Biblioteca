@@ -38,9 +38,9 @@ public class Autenticacao {
 	private void authenticate(String username, String password) throws Exception {
 		Login registro = login.consultarLoginEmail(username);
 
-//		if (registro == null || !(registro.getEmail().equals(username)) || !(registro.getPassword().equals(password))) {
-//			throw new Exception("usuário ou senhá inválido");
-//		}
+		if (registro == null || !(registro.getEmail().equals(username)) || !(registro.getPassword().equals(password))) {
+			throw new Exception("usuário ou senhá inválido");
+		}
 	}
 
 	private String issueToken(String username) {
