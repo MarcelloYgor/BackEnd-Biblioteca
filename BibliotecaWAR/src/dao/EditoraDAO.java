@@ -39,7 +39,7 @@ public class EditoraDAO {
 		Editora retorno = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "SELECT * FROM tb_editora WHERE nome = ?";
+			String sql = "SELECT id, nome, endereco, nacionalidade FROM tb_editora WHERE nome = ?";
 			stmt = connection.getPreparedStatement(sql);
 			stmt.setString(1, nome);
 
@@ -67,7 +67,7 @@ public class EditoraDAO {
 		Editora retorno = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "SELECT * FROM tb_editora WHERE id = ?";
+			String sql = "SELECT id, nome, endereco, nacionalidade FROM tb_editora WHERE id = ?";
 			stmt = connection.getPreparedStatement(sql);
 			stmt.setInt(1, id);
 

@@ -38,7 +38,7 @@ public class AutorDAO {
 		Autor retorno = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "SELECT * FROM tb_autor WHERE nome = ?";
+			String sql = "SELECT id, nome, nacionalidade FROM tb_autor WHERE nome = ?";
 			stmt = connection.getPreparedStatement(sql);
 			stmt.setString(1, nome);
 
@@ -65,7 +65,7 @@ public class AutorDAO {
 		Autor retorno = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "SELECT * FROM tb_autor WHERE id = ?";
+			String sql = "SELECT id, nome, nacionalidade FROM tb_autor WHERE id = ?";
 			stmt = connection.getPreparedStatement(sql);
 			stmt.setInt(1, id);
 

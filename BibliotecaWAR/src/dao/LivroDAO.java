@@ -46,7 +46,7 @@ public class LivroDAO {
 		Livro retorno = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "SELECT * FROM tb_Livro WHERE nome = ?";
+			String sql = "SELECT id, nome, id_autor, id_editora, ano, edicao, num_paginas, id_genero, idioma, qtd_disponivel FROM tb_Livro WHERE nome = ?";
 			stmt = connection.getPreparedStatement(sql);
 			stmt.setString(1, nome);
 
@@ -84,7 +84,7 @@ public class LivroDAO {
 		Livro retorno = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "SELECT * FROM tb_Livro WHERE id = ?";
+			String sql = "SELECT id, nome, id_autor, id_editora, ano, edicao, num_paginas, id_genero, idioma, qtd_disponivel FROM tb_Livro WHERE id = ?";
 			stmt = connection.getPreparedStatement(sql);
 			stmt.setInt(1, id);
 

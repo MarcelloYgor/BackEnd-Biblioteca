@@ -41,7 +41,7 @@ public class AtendenteDAO {
 		Atendente retorno = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "SELECT * FROM tb_funcionario WHERE cpf = ?";
+			String sql = "SELECT id, nome, rg, cpf, salario, admin FROM tb_funcionario WHERE cpf = ?";
 			stmt = connection.getPreparedStatement(sql);
 			stmt.setLong(1, cpf);
 
@@ -71,7 +71,7 @@ public class AtendenteDAO {
 		Atendente retorno = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "SELECT * FROM tb_funcionario WHERE id = ?";
+			String sql = "SELECT id, nome, rg, cpf, salario, admin FROM tb_funcionario WHERE id = ?";
 			stmt = connection.getPreparedStatement(sql);
 			stmt.setInt(1, id);
 

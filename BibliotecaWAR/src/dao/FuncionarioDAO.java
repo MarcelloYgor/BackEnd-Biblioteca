@@ -16,7 +16,7 @@ public class FuncionarioDAO {
 		Funcionario retorno = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "SELECT * FROM tb_funcionario WHERE id = ?";
+			String sql = "SELECT id, nome, rg, cpf, admin FROM tb_funcionario WHERE id = ?";
 			stmt = connection.getPreparedStatement(sql);
 			stmt.setInt(1, id);
 

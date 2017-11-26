@@ -41,7 +41,7 @@ public class EmprestimoDAO {
 		Emprestimo retorno = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "SELECT * FROM tb_emprestimo WHERE id_cliente = ? AND id_funcionario = ? AND data_emprestimo = ?";
+			String sql = "SELECT id, id_cliente, id_funcionario, data_emprestimo, data_devolucao, active FROM tb_emprestimo WHERE id_cliente = ? AND id_funcionario = ? AND data_emprestimo = ?";
 			stmt = connection.getPreparedStatement(sql);
 			stmt.setInt(1, idCliente);
 			stmt.setInt(2, idFunc);
@@ -77,7 +77,7 @@ public class EmprestimoDAO {
 		Emprestimo retorno = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "SELECT * FROM tb_emprestimo WHERE id = ?";
+			String sql = "SELECT id, id_cliente, id_funcionario, data_emprestimo, data_devolucao, active FROM tb_emprestimo WHERE id = ?";
 			stmt = connection.getPreparedStatement(sql);
 			stmt.setInt(1, id);
 

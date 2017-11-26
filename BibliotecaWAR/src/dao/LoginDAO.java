@@ -66,7 +66,7 @@ public class LoginDAO {
 		Login retorno = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "SELECT * FROM tb_login WHERE id = ?";
+			String sql = "SELECT (id, id_funcionario, email, password, admin) FROM tb_login WHERE id = ?";
 			stmt = connection.getPreparedStatement(sql);
 			stmt.setInt(1, id);
 

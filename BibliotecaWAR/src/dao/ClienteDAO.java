@@ -43,7 +43,7 @@ public class ClienteDAO {
 		Cliente retorno = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "SELECT * FROM tb_cliente WHERE cpf = ?";
+			String sql = "SELECT id, nome, rg, cpf, endereco, telefone, cidade, dt_nascimento FROM tb_cliente WHERE cpf = ?";
 			stmt = connection.getPreparedStatement(sql);
 			stmt.setLong(1, cpf);
 
@@ -75,7 +75,7 @@ public class ClienteDAO {
 		Cliente retorno = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "SELECT * FROM tb_cliente WHERE id = ?";
+			String sql = "SELECT id, nome, rg, cpf, endereco, telefone, cidade, dt_nascimento FROM tb_cliente WHERE id = ?";
 			stmt = connection.getPreparedStatement(sql);
 			stmt.setInt(1, cpf);
 
