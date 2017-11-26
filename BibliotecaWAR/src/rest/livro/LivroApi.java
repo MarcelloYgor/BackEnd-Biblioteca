@@ -12,6 +12,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
+import dao.AutorDAO;
+import dao.EditoraDAO;
+import dao.GeneroDAO;
 import dao.LivroDAO;
 import entity.Livro;
 import rest.authentication.Secured;
@@ -20,18 +23,33 @@ import rest.authentication.Secured;
 public class LivroApi {
 	
 	private final LivroDAO livroDao = new LivroDAO();
+	private final AutorDAO autorDao = new AutorDAO();
+	private final EditoraDAO editoraDao = new EditoraDAO();
+	private final GeneroDAO generoDao = new GeneroDAO();
 
 	@Path("/adicionar")
 	@PUT
 	@Secured
 	@Produces("application/json")
-	public ResponseBuilder add(Livro livro) {
+	public Response add(Livro livro) {
+		Response.ResponseBuilder builder = null;
 		try {
+			// Autor editora genero
+			livro.setAutor(autorDao.consultarAutorNome(livro.getAutor().getNome()));
+			livro.setEditora(editoraDao.consultarEditoraNome(livro.getEditora().getNome()));
+			livro.setGenero(generoDao.consultarGeneroNome(livro.getGenero().getNome()));
+			Double random = Math.random();
+			
+			livro.setId(random.intValue());
+			
 			livroDao.cadastrarLivro(livro);
+
+			builder = Response.ok("Ok");
 		} catch (Exception e) {
-			return Response.serverError();
+			e.printStackTrace();
+			builder = Response.serverError();
 		}
-		return Response.ok("Ok");
+		return builder.build();
 	}
 	
 	@Path("/alterar")

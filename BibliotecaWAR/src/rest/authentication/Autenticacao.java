@@ -30,17 +30,17 @@ public class Autenticacao {
 			return Response.ok(token).build();
 
 		} catch (Exception e) {
-			System.out.println(e);
+			e.printStackTrace();
 			return Response.status(Response.Status.FORBIDDEN).build();
 		}
 	}
 
 	private void authenticate(String username, String password) throws Exception {
-		// Busca no banco de dados
 		Login registro = login.consultarLoginEmail(username);
-		if (!registro.getEmail().equals(username) || !registro.getPassword().equals(password)) {
-			throw new Error("usuário ou senhá inválido");
-		}
+
+//		if (registro == null || !(registro.getEmail().equals(username)) || !(registro.getPassword().equals(password))) {
+//			throw new Exception("usuário ou senhá inválido");
+//		}
 	}
 
 	private String issueToken(String username) {

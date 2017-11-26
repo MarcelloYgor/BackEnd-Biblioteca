@@ -35,28 +35,24 @@ public class LoginDAO {
 		}
 	}
 
-	public Login consultarLoginEmail(String email) {
+	public Login consultarLoginEmail(String email) throws SQLException {
 		PreparedStatement stmt = null;
 		Login retorno = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "SELECT * FROM tb_login WHERE email = ?";
+			String sql = "select * from tb_login where email = ?";
 			stmt = connection.getPreparedStatement(sql);
 			stmt.setString(1, email);
 
 			ResultSet result = stmt.executeQuery();
-			if (result.isBeforeFirst()) {
-				result.next();
+			while (result.next()) {
 				retorno = new Login();
-				FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-				retorno.setId(result.getInt("id"));
-				retorno.setFuncionario(funcionarioDAO.consultarFuncionarioId(result.getInt("id_funcionario")));
 				retorno.setEmail(result.getString("email"));
 				retorno.setPassword(result.getString("password"));
-				retorno.setAdmin(result.getBoolean("admin"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw e;
 		} finally {
 			if (stmt != null) {
 				connection.closeConnection(stmt);
