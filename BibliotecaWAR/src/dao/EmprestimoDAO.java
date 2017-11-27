@@ -13,22 +13,22 @@ public class EmprestimoDAO {
 
 	private BibliotecaDatasource connection;
 
-	public void cadastrarEmprestimo(Emprestimo emprestimo) {
+	public void cadastrarEmprestimo(Emprestimo emprestimo) throws SQLException {
 		PreparedStatement stmt = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "INSERT INTO tb_emprestimo VALUES(?, ?, ?, ?, ?);";
+			String sql = "INSERT INTO tb_emprestimo(id_cliente, data_emprestimo, data_devolucao, active, id) VALUES(?, ?, ?, ?, ?)";
 			stmt = connection.getPreparedStatement(sql);
 			stmt.setInt(1, emprestimo.getCliente().getId());
-			stmt.setInt(2, emprestimo.getFuncionario().getId());
-			stmt.setDate(3, converteData(emprestimo.getDataEmprestimo()));
-			stmt.setDate(4, converteData(emprestimo.getDataDevolucao()));
-			stmt.setBoolean(5, emprestimo.isActive());
-
+			stmt.setDate(2, converteData(emprestimo.getDataEmprestimo()));
+			stmt.setDate(3, converteData(emprestimo.getDataDevolucao()));
+			stmt.setBoolean(4, emprestimo.isActive());
+			stmt.setInt(5, emprestimo.getId());
+			
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println("Couldnt save object in database!\n SqlState: " + e.getSQLState() + "\nErrorCode: "
-					+ e.getErrorCode() + " " + "\nMessage: " + e.getMessage());
+			e.printStackTrace();
+			throw e;
 		} finally {
 			if (stmt != null) {
 				connection.closeConnection(stmt);
@@ -41,7 +41,7 @@ public class EmprestimoDAO {
 		Emprestimo retorno = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "SELECT id, id_cliente, id_funcionario, data_emprestimo, data_devolucao, active FROM tb_emprestimo WHERE id_cliente = ? AND id_funcionario = ? AND data_emprestimo = ?";
+			String sql = "SELECT id, id_cliente, data_emprestimo, data_devolucao, active FROM tb_emprestimo WHERE id_cliente = ? AND data_emprestimo = ?";
 			stmt = connection.getPreparedStatement(sql);
 			stmt.setInt(1, idCliente);
 			stmt.setInt(2, idFunc);
@@ -52,12 +52,10 @@ public class EmprestimoDAO {
 				result.next();
 				retorno = new Emprestimo();
 				ClienteDAO cliente = new ClienteDAO();
-				FuncionarioDAO funcionario = new FuncionarioDAO();
-				LivrosEmprestados livrosEmprestados = new LivrosEmprestados();
+//				LivrosEmprestados livrosEmprestados = new LivrosEmprestados();
 				retorno.setId(result.getInt("id"));
-				retorno.setLivros(livrosEmprestados.pegarLivrosEmprestados(retorno.getId()));
+//				retorno.setLivros(livrosEmprestados.pegarLivrosEmprestados(retorno.getId()));
 				retorno.setCliente(cliente.consultarClienteId(result.getInt("id_cliente")));
-				retorno.setFuncionario(funcionario.consultarFuncionarioId(result.getInt("id_funcionario")));
 				retorno.setDataEmprestimo(result.getDate("data_emprestimo"));
 				retorno.setDataDevolucao(result.getDate("data_devolucao"));
 				retorno.setActive(result.getBoolean("active"));
@@ -77,7 +75,7 @@ public class EmprestimoDAO {
 		Emprestimo retorno = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "SELECT id, id_cliente, id_funcionario, data_emprestimo, data_devolucao, active FROM tb_emprestimo WHERE id = ?";
+			String sql = "SELECT id, id_cliente, data_emprestimo, data_devolucao, active FROM tb_emprestimo WHERE id = ?";
 			stmt = connection.getPreparedStatement(sql);
 			stmt.setInt(1, id);
 
@@ -86,12 +84,10 @@ public class EmprestimoDAO {
 				result.next();
 				retorno = new Emprestimo();
 				ClienteDAO cliente = new ClienteDAO();
-				FuncionarioDAO funcionario = new FuncionarioDAO();
 				LivrosEmprestados livrosEmprestados = new LivrosEmprestados();
 				retorno.setId(result.getInt("id"));
 				retorno.setLivros(livrosEmprestados.pegarLivrosEmprestados(retorno.getId()));
 				retorno.setCliente(cliente.consultarClienteId(result.getInt("id_cliente")));
-				retorno.setFuncionario(funcionario.consultarFuncionarioId(result.getInt("id_funcionario")));
 				retorno.setDataEmprestimo(result.getDate("data_emprestimo"));
 				retorno.setDataDevolucao(result.getDate("data_devolucao"));
 				retorno.setActive(result.getBoolean("active"));
@@ -111,8 +107,8 @@ public class EmprestimoDAO {
 		List<Emprestimo> emprestimos = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "select id, id_cliente, id_funcionario, data_emprestimo, data_devolucao, active "
-					+ "from tb_emprestimo;";
+			String sql = "select id, id_cliente, data_emprestimo, data_devolucao, active "
+					+ "from tb_emprestimo";
 			stmt = connection.getPreparedStatement(sql);
 			ResultSet result = stmt.executeQuery();
 
@@ -121,11 +117,9 @@ public class EmprestimoDAO {
 			while (result.next()) {
 				Emprestimo emprestimo = new Emprestimo();
 				ClienteDAO cliente = new ClienteDAO();
-				FuncionarioDAO funcionario = new FuncionarioDAO();
 				emprestimo.setId(result.getInt("id"));
 				emprestimo.setLivros(livrosEmprestados.pegarLivrosEmprestados(emprestimo.getId()));
 				emprestimo.setCliente(cliente.consultarClienteId(result.getInt("id_cliente")));
-				emprestimo.setFuncionario(funcionario.consultarFuncionarioId(result.getInt("id_funcionario")));
 				emprestimo.setDataEmprestimo(result.getDate("data_emprestimo"));
 				emprestimo.setDataDevolucao(result.getDate("data_devolucao"));
 				emprestimo.setActive(result.getBoolean("active"));
@@ -146,7 +140,7 @@ public class EmprestimoDAO {
 		PreparedStatement stmt = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "DELETE FROM tb_emprestimo WHERE id = ?;";
+			String sql = "DELETE FROM tb_emprestimo WHERE id = ?";
 			stmt = connection.getPreparedStatement(sql);
 			stmt.setInt(1, id);
 
@@ -164,15 +158,14 @@ public class EmprestimoDAO {
 		PreparedStatement stmt = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "UPDATE tb_emprestimo SET id_cliente = ?, id_funcionario = ?, data_emprestimo = ?, data_devolucao = ?, active = ?"
-					+ " WHERE id = ?;";
+			String sql = "UPDATE tb_emprestimo SET id_cliente = ?, data_emprestimo = ?, data_devolucao = ?, active = ?"
+					+ " WHERE id = ?";
 			stmt = connection.getPreparedStatement(sql);
 			stmt.setInt(1, emprestimo.getCliente().getId());
-			stmt.setInt(2, emprestimo.getFuncionario().getId());
-			stmt.setDate(3, converteData(emprestimo.getDataEmprestimo()));
-			stmt.setDate(4, converteData(emprestimo.getDataDevolucao()));
-			stmt.setBoolean(5, emprestimo.isActive());
-			stmt.setInt(6, emprestimo.getId());
+			stmt.setDate(2, converteData(emprestimo.getDataEmprestimo()));
+			stmt.setDate(3, converteData(emprestimo.getDataDevolucao()));
+			stmt.setBoolean(4, emprestimo.isActive());
+			stmt.setInt(5, emprestimo.getId());
 
 			stmt.executeUpdate();
 		} catch (SQLException e) {

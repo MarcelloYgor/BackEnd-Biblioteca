@@ -1,17 +1,14 @@
 package entity;
 
 import java.util.Date;
-import java.util.List;
 
 public class Emprestimo {
 
 	private int id;
-	
-	private List<Livro> livros;
+
+	private Livro livros;
 
 	private Cliente cliente;
-
-	private Funcionario funcionario;
 
 	private Date dataEmprestimo;
 
@@ -27,11 +24,11 @@ public class Emprestimo {
 		this.id = id;
 	}
 
-	public List<Livro> getLivros() {
+	public Livro getLivros() {
 		return livros;
 	}
 
-	public void setLivros(List<Livro> livros) {
+	public void setLivros(Livro livros) {
 		this.livros = livros;
 	}
 
@@ -41,14 +38,6 @@ public class Emprestimo {
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
-	}
-
-	public Funcionario getFuncionario() {
-		return funcionario;
-	}
-
-	public void setFuncionario(Funcionario funcionario) {
-		this.funcionario = funcionario;
 	}
 
 	public Date getDataEmprestimo() {

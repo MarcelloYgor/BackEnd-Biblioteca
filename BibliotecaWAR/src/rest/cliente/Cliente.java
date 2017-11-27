@@ -80,7 +80,7 @@ public class Cliente {
 		return builder.build();
 	}
 	
-	@Path("/pesquisar")
+	@Path("/pesquisar/cpf")
 	@POST
 	@Secured
 	@Produces("application/json")
@@ -105,7 +105,6 @@ public class Cliente {
 		List<entity.Cliente> clientes = null;
 		Response.ResponseBuilder builder = null;
 		try {
-			System.out.println("Aqui");
 			clientes = clienteDao.pegarClientes();
 			builder = Response.ok(clientes);
 		} catch (Exception e) {

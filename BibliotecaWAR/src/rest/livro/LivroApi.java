@@ -76,11 +76,11 @@ public class LivroApi {
 		return Response.ok("Ok");
 	}
 	
-	@Path("/pesquisar")
+	@Path("/pesquisar/id")
 	@POST
 	@Secured
 	@Produces("application/json")
-	public Response pesquisaId(@QueryParam("id") int id) {
+	public Response pesquisaId(int id) {
 		Livro livro = null;
 		Response.ResponseBuilder builder = null;
 		try {

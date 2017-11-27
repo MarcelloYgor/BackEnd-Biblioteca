@@ -1,3 +1,4 @@
+Alter user livraria  default tablespace users;
 
 CREATE TABLE tb_cliente (
 	id INTEGER primary key,
@@ -140,23 +141,10 @@ END;
 CREATE TABLE tb_emprestimo (
 	id INT PRIMARY KEY,
 	id_cliente constraint fk_cliente_emprestimo references tb_cliente,
-	id_funcionario INT constraint fk_funcionario_emprestimo references tb_funcionario,
 	data_emprestimo DATE NOT NULL,
 	data_devolucao DATE,
 	active int NOT NULL
 );
-
-CREATE SEQUENCE emprestimo_seq START WITH 1;
-
-CREATE OR REPLACE TRIGGER emprestimo_bir 
-BEFORE INSERT ON tb_emprestimo 
-FOR EACH ROW
-
-BEGIN
-  SELECT emprestimo_seq.NEXTVAL
-  INTO   :new.id
-  FROM   dual;
-END;
 			
 CREATE TABLE tb_livros_emprestados (
 	id INT PRIMARY KEY,
@@ -175,3 +163,44 @@ BEGIN
   INTO   :new.id
   FROM   dual;
 END;
+
+select * from tb_login;
+
+select * from tb_cliente;
+
+select * from TB_EMPRESTIMO e inner join TB_livros_emprestados le on e.id = le.id_emprestimo 
+    where e.active = 1;
+
+
+
+select * from TB_EMPRESTIMO;
+
+select * from TB_livros_emprestados;
+
+select * from tb_funcionario;
+
+insert into tb_funcionario(SALARIO,RG,NOME,ID,CPF,ADMIN) values(21000, '52500581x', 'felipe',1,10,1);
+
+insert into tb_login(PASSWORD,ID_FUNCIONARIO,ID,EMAIL,ADMIN) values('123',1,1,'felipe@felipe.com',1);
+
+SELECT * FROM tb_login;
+
+insert into TB_AUTOR(id,nacionalidade,nome) values(1,'USA','Jeff Sutherland');
+
+insert into TB_AUTOR(id,nacionalidade,nome) values(2,'Reino Unido','Joanne Kathleen Rowling');
+
+insert into TB_EDITORA(id,nacionalidade,nome,endereco) values(1,'br','leya','Av. Angélica');
+
+insert into TB_EDITORA(id,nacionalidade,nome,endereco) values(3,'br','Rocco','Desconhecido');
+
+insert into TB_GENERO(id,nome,descricao) values(1,'unknown', 'desconhecido');
+
+insert into TB_GENERO(id,nome,descricao) values(2,'Fantasia', 'Fantasia');
+
+select * from tb_livro;
+
+select * from tb_funcionario;
+
+SELECT id, nome, nacionalidade FROM tb_autor WHERE nome = 'Jeff Sutherland';
+
+delete from tb_autor;

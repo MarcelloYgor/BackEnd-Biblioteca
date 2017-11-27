@@ -86,6 +86,7 @@ public class Funcionario {
 	@Secured
 	@Produces("application/json")
 	public Response pesquisaNome(String nome) {
+		System.out.println(nome);
 		entity.Funcionario funcionario = null;
 		ResponseBuilder builder = null;
 		try {
@@ -102,6 +103,7 @@ public class Funcionario {
 	@Secured
 	@Produces("application/json")
 	public Response pesquisaTodos() {
+		System.out.println("todos");
 		ArrayList<entity.Funcionario> funcionarios = null;
 		ResponseBuilder builder = null;
 		try {
