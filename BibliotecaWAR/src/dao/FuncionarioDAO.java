@@ -40,9 +40,9 @@ public class FuncionarioDAO {
 		Funcionario retorno = null;
 		try {
 			connection = new BibliotecaDatasource();
-			String sql = "SELECT id, nome, rg, cpf, admin FROM tb_funcionario WHERE nome like ?";
+			String sql = "SELECT id, nome, rg, cpf, admin FROM tb_funcionario WHERE nome = ?";
 			stmt = connection.getPreparedStatement(sql);
-			stmt.setString(1, "%" + nome + "%");
+			stmt.setString(1, nome);
 
 			ResultSet result = stmt.executeQuery();
 			while (result.next()) {

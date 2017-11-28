@@ -81,7 +81,7 @@ public class Funcionario {
 		return builder.build();
 	}
 	
-	@Path("/pesquisar")
+	@Path("/pesquisar/nome")
 	@POST
 	@Secured
 	@Produces("application/json")
