@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import datasource.BibliotecaDatasource;
@@ -84,9 +85,9 @@ public class EmprestimoDAO {
 				result.next();
 				retorno = new Emprestimo();
 				ClienteDAO cliente = new ClienteDAO();
-				LivrosEmprestados livrosEmprestados = new LivrosEmprestados();
+//				LivrosEmprestados livrosEmprestados = new LivrosEmprestados();
 				retorno.setId(result.getInt("id"));
-				retorno.setLivros(livrosEmprestados.pegarLivrosEmprestados(retorno.getId()));
+//				retorno.setLivros(livrosEmprestados.pegarLivrosEmprestados(retorno.getId()));
 				retorno.setCliente(cliente.consultarClienteId(result.getInt("id_cliente")));
 				retorno.setDataEmprestimo(result.getDate("data_emprestimo"));
 				retorno.setDataDevolucao(result.getDate("data_devolucao"));
@@ -166,6 +167,27 @@ public class EmprestimoDAO {
 			stmt.setDate(3, converteData(emprestimo.getDataDevolucao()));
 			stmt.setBoolean(4, emprestimo.isActive());
 			stmt.setInt(5, emprestimo.getId());
+
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (connection != null) {
+				connection.closeConnection(stmt);
+			}
+		}
+	}
+	
+	public void finalizaEmprestimo(Emprestimo emprestimo) {
+		PreparedStatement stmt = null;
+		try {
+			connection = new BibliotecaDatasource();
+			String sql = "UPDATE tb_emprestimo SET data_devolucao = ?, active = ?"
+					+ " WHERE id = ?";
+			stmt = connection.getPreparedStatement(sql);
+			stmt.setDate(1, converteData(emprestimo.getDataDevolucao()));
+			stmt.setBoolean(2, emprestimo.isActive());
+			stmt.setInt(3, emprestimo.getId());
 
 			stmt.executeUpdate();
 		} catch (SQLException e) {

@@ -1,5 +1,6 @@
 package rest.emprestimo;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -37,6 +38,23 @@ public class Emprestimo {
 		}
 		return builder.build();
 	}
+	
+	@Path("/emprestimoId")
+	@POST
+	@Secured
+	@Consumes("application/json")
+	@Produces("application/json")
+	public Response emprestimo(int id) {
+		ResponseBuilder builder = null;
+		try {
+			System.out.println("Aqui" + id);
+			entity.Emprestimo emprestimo = emprestimoDao.consultarEmprestimoId(id);
+			builder = Response.ok(emprestimo);
+		} catch (Exception e) {
+			builder = Response.serverError();
+		}
+		return builder.build();
+	}
 
 	@Path("/emprestar")
 	@POST
@@ -57,6 +75,28 @@ public class Emprestimo {
 			
 			emprestimoDao.cadastrarEmprestimo(emprestimoE);
 			livrosEmprestadosDao.cadastrarLivrosEmprestados(emprestimo.getLivro(), randomNum);
+			
+			builder = Response.ok("{'ok':200}");
+		} catch (Exception e) {
+			builder = Response.serverError();
+		}
+		return builder.build();
+	}
+	
+	@Path("/finalizar")
+	@POST
+	@Secured
+	@Consumes("application/json")
+	@Produces("application/json")
+	public Response finalizar(int id) {
+		ResponseBuilder builder = null;
+		try {
+			entity.Emprestimo emprestimoE = new entity.Emprestimo();
+			emprestimoE.setDataDevolucao(new Date());
+			emprestimoE.setActive(false);
+			emprestimoE.setId(id);
+			
+			emprestimoDao.alterarEmprestimo(emprestimoE);
 			
 			builder = Response.ok("{'ok':200}");
 		} catch (Exception e) {

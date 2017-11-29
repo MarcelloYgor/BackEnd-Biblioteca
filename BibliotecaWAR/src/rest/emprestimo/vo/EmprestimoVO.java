@@ -2,17 +2,31 @@ package rest.emprestimo.vo;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import entity.Cliente;
 import entity.Livro;
 
 public class EmprestimoVO {
+
+	@XmlElement(required = false)
+	private int id;
+
 	private Livro livro;
-	
+
 	private Cliente cliente;
-	
+
 	private Date dt_emprestimo;
-	
+
 	private Date dt_devolucao;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public Livro getLivro() {
 		return livro;
