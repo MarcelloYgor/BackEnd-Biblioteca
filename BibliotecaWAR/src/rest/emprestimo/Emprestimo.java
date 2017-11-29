@@ -13,16 +13,16 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 
 import dao.EmprestimoDAO;
 import dao.LivrosEmprestados;
-import entity.Livro;
 import rest.authentication.Secured;
 import rest.emprestimo.vo.EmprestimoVO;
+import rest.emprestimo.vo.EmprestimosVo;
 
 @Path("/emprestimo")
 public class Emprestimo {
-	
+
 	private EmprestimoDAO emprestimoDao = new EmprestimoDAO();
 	private LivrosEmprestados livrosEmprestadosDao = new LivrosEmprestados();
-	
+
 	@Path("/emprestados")
 	@POST
 	@Secured
@@ -31,14 +31,14 @@ public class Emprestimo {
 	public Response emprestados() {
 		ResponseBuilder builder = null;
 		try {
-			 List<Livro> emprestimos = livrosEmprestadosDao.pegarLivrosEmprestados();
+			List<EmprestimosVo> emprestimos = livrosEmprestadosDao.pegarLivrosEmprestados();
 			builder = Response.ok(emprestimos);
 		} catch (Exception e) {
 			builder = Response.serverError();
 		}
 		return builder.build();
 	}
-	
+
 	@Path("/emprestimoId")
 	@POST
 	@Secured
@@ -72,17 +72,17 @@ public class Emprestimo {
 			emprestimoE.setDataDevolucao(emprestimo.getDt_devolucao());
 			emprestimoE.setActive(true);
 			emprestimoE.setId(randomNum);
-			
+
 			emprestimoDao.cadastrarEmprestimo(emprestimoE);
 			livrosEmprestadosDao.cadastrarLivrosEmprestados(emprestimo.getLivro(), randomNum);
-			
+
 			builder = Response.ok("{'ok':200}");
 		} catch (Exception e) {
 			builder = Response.serverError();
 		}
 		return builder.build();
 	}
-	
+
 	@Path("/finalizar")
 	@POST
 	@Secured
@@ -95,9 +95,9 @@ public class Emprestimo {
 			emprestimoE.setDataDevolucao(new Date());
 			emprestimoE.setActive(false);
 			emprestimoE.setId(id);
-			
+
 			emprestimoDao.alterarEmprestimo(emprestimoE);
-			
+
 			builder = Response.ok("{'ok':200}");
 		} catch (Exception e) {
 			builder = Response.serverError();

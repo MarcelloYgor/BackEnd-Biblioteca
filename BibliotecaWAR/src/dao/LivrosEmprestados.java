@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import datasource.BibliotecaDatasource;
+import entity.Cliente;
 import entity.Livro;
+import rest.emprestimo.vo.EmprestimosVo;
 
 public class LivrosEmprestados {
 
@@ -35,9 +37,9 @@ public class LivrosEmprestados {
 	}
 	
 
-	public List<Livro> pegarLivrosEmprestados() {
+	public List<EmprestimosVo> pegarLivrosEmprestados() throws SQLException {
 		PreparedStatement stmt = null;
-		List<Livro> livros = null;
+		List<EmprestimosVo> emprestimos = null;
 		try {
 			connection = new BibliotecaDatasource();
 			String sql = "select * from TB_EMPRESTIMO e inner join TB_livros_emprestados le on e.id = le.id_emprestimo \n" + 
@@ -45,22 +47,30 @@ public class LivrosEmprestados {
 			stmt = connection.getPreparedStatement(sql);
 			ResultSet result = stmt.executeQuery();
 
-			livros = new ArrayList<>();
+			emprestimos = new ArrayList<>();
 			while (result.next()) {
-				Livro livro = new Livro();
+				EmprestimosVo emprestimo = new EmprestimosVo();
 				LivroDAO livroDAO = new LivroDAO();
-				livro = livroDAO.consultarLivroId(result.getInt("id_livro"));
-				livros.add(livro);
+				Livro livro = livroDAO.consultarLivroId(result.getInt("id_livro"));
+				emprestimo.setLivro(livro);
+				
+				ClienteDAO clienteDao = new ClienteDAO();
+				Cliente cliente = clienteDao.consultarClienteId(result.getInt("id_cliente"));
+				emprestimo.setCliente(cliente);
+				emprestimo.setDataEmprestimo(result.getDate("data_emprestimo"));
+				emprestimo.setDataDevolucao(result.getDate("data_devolucao"));
+				
+				emprestimos.add(emprestimo);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw e;
 		} finally {
 			if (stmt != null) {
 				connection.closeConnection(stmt);
 			}
 		}
-		return livros;
+		return emprestimos;
 	}
 
 	public void excluirLivrosEmprestados(int id) {
