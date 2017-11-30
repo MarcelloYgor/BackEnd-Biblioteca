@@ -164,6 +164,34 @@ BEGIN
   FROM   dual;
 END;
 
+CREATE OR REPLACE PROCEDURE numero_emprestimos (
+	dt_emprestimo IN DATE,
+	dt_devolucao IN DATE)
+AS
+BEGIN
+	SELECT COUNT(*) FROM tb_emprestimo
+		WHERE data_emprestimo = dt_emprestimo
+			AND data_devolucao = dt_devolucao;
+END numero_emprestimos;
+
+CREATE OR REPLACE PROCEDURE numero_livros (
+	id IN INT)
+AS
+BEGIN
+	SELECT COUNT (*) FROM tb_livros_emprestados
+		WHERE id_emprestimo = id;
+END numero_livros;
+
+CREATE OR REPLACE PROCEDURE livros_tops (
+	id IN INT
+)
+AS
+BEGIN
+	SELECT id_livro COUNT(*) 
+		AS livro_count FROM tb_livros_emprestados
+			WHERE id_emprestimo = id;
+END livros_tops;
+			
 select * from tb_login;
 
 select * from tb_cliente;

@@ -1,6 +1,7 @@
 package datasource;
 
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -47,6 +48,17 @@ private Connection connection;
 			throw new Error(e);
 		}
 		return pstmt;
+	}
+	
+	public CallableStatement prepareCall(String sql) {
+		CallableStatement callStmt = null;
+		try {
+			callStmt = connection.prepareCall(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new Error(e);
+		}
+		return callStmt;
 	}
 	
 	public Boolean closeConnection(PreparedStatement pstmt) {
