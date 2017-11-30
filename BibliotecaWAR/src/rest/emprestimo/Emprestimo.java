@@ -48,7 +48,7 @@ public class Emprestimo {
 		ResponseBuilder builder = null;
 		try {
 			System.out.println("Aqui" + id);
-			entity.Emprestimo emprestimo = emprestimoDao.consultarEmprestimoId(id);
+			EmprestimosVo emprestimo = livrosEmprestadosDao.pegarLivroEmprestado(id);
 			builder = Response.ok(emprestimo);
 		} catch (Exception e) {
 			builder = Response.serverError();

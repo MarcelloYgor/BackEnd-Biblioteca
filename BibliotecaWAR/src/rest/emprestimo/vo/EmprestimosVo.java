@@ -7,6 +7,8 @@ import entity.Livro;
 
 public class EmprestimosVo {
 
+	private int id;
+
 	private Livro livro;
 
 	private Cliente cliente;
@@ -17,6 +19,14 @@ public class EmprestimosVo {
 
 	public Livro getLivro() {
 		return livro;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public void setLivro(Livro livro) {
